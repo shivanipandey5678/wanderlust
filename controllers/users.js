@@ -4,7 +4,7 @@ module.exports.OpenSignupUp=(req, res) => {
     res.render("user/signup.ejs");
 };
 
-module.exports.signup=async (req, res) => {
+module.exports.signup=async (req, res,next) => {
     try {
         let user = req.body.user;
         let newUser = new User(user);
