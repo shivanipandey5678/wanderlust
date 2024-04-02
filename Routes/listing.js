@@ -20,14 +20,14 @@ const validateListing = (req, res, next) => {
     }
 };
 
+
+// Navigate to create page route
+router.get("/new",isLoggedIn,wrapAsync(listingController.NavigateToCreatePage) );
+
 router.route("/:id")
 .get( wrapAsync(listingController.ShowSingleList))
 .delete(isLoggedIn, isOwner,wrapAsync(listingController.DestroySingleList))
 .put(isLoggedIn,isOwner, wrapAsync(listingController.UpdateList));
-
-
-// Navigate to create page route
-router.get("/new",isLoggedIn,wrapAsync(listingController.NavigateToCreatePage) );
 
 
 // Navigate to edit page route

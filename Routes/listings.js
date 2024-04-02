@@ -24,7 +24,8 @@ const validateListing=((req,res,next)=>{
 
 router.route("/")
    .get( wrapAsync(listingController.index))
-   .post( validateListing,isLoggedIn, wrapAsync(listingController.createListing));
+//    .post( validateListing,isLoggedIn, wrapAsync(listingController.createListing));
+   .post((req,res)=>{res.send(req.body)});
 
 
 

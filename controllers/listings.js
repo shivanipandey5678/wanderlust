@@ -1,17 +1,21 @@
 const Listing =require("../Model/listings");
 
-module.exports.index=async (req, res) => {
+module.exports.index=async(req, res) => {
     const AllListings = await Listing.find({});
     res.render("listings/index.ejs", { AllListings });
 };
 
-module.exports.createListing=async (req, res, next) => {
+module.exports.createListing=async (req, res) => {
+    if(!req.body.listing){
+        req.flash("error", "No data found.");
+        return res.redirect("/listings");
+    }
     let listing = req.body.listing;
     const newListing = new Listing(listing);
     newListing.owner=req.user._id;
     await newListing.save();
     req.flash("success", "Your listing has been successfully created! 🚀 Check it out below.");
-    res.redirect("/listings");
+    return res.redirect("/listings");
 };
 
 module.exports.NavigateToCreatePage=async (req, res) => {
@@ -25,7 +29,7 @@ module.exports.ShowSingleList=async (req, res) => {
         req.flash("error", "The requested listing does not exist.");
         return res.redirect("/listings");
     }
-    console.log(info_of_list)
+    // console.log(info_of_list)
     res.render("listings/show.ejs", { info_of_list });
 };
 
@@ -37,7 +41,7 @@ module.exports.DestroySingleList=async (req, res) => {
         return res.redirect("/listings");
     }
     req.flash("success", "Listing deleted successfully! Hope to see a new one soon. 😊");
-    res.redirect("/listings");
+    return res.redirect("/listings");
 };
 
 module.exports.NavigateToEditPage=async (req, res) => {
@@ -47,7 +51,7 @@ module.exports.NavigateToEditPage=async (req, res) => {
         req.flash("error", "The listing you are trying to edit does not exist.");
         return res.redirect("/listings");
     }
-    console.log(searchList);
+    // console.log(searchList);
     res.render("listings/editpage.ejs", { searchList });
 };
 
@@ -59,5 +63,5 @@ module.exports.UpdateList=async (req, res) => {
         return res.redirect("/listings");
     }
     req.flash("success", "Listing updated successfully! 🎉 Check out the new details.");
-    res.redirect(`/listing/${id}`);
+    return res.redirect(`/listing/${id}`);
 };
