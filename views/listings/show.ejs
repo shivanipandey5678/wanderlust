@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>show list</title>
+</head>
+<body>
+    <h3><%=info_of_list.title%></h3>
+    <img src=<%=info_of_list.image.url%> alt="img_of_place" width="250px">
+    <p><%=info_of_list.description%></p>
+    <p> &#8377 <%= info_of_list.price.toLocaleString("en-IN") %></p>
+
+    <p><%=info_of_list.location%></p>
+    <p><%=info_of_list.country%></p>
+    <a href="/listing/<%=info_of_list._id%>/edit">EDIT</a>
+    <form action="/listing/<%= info_of_list._id %>?_method=DELETE" method="post">
+        <button>Delete</button>
+    </form>
+</body>
+</html>
