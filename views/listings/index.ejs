@@ -10,5 +10,8 @@
     <% for (let listing of AllListings ){%>
         <a href="listing/<%=listing._id%>"><li><%=listing.title%></li></a>
     <%}%>
-</body>
+    <form action="/listing/new">
+        <button>Create New List</button>
+    </form>
+ </body>
 </html>

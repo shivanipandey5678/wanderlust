@@ -6,13 +6,13 @@
     <title>create new listing</title>
 </head>
 <body>
-    <form action="/listing/create" method="post">
-        <input name="title" type="text" placeholder="Enter title">
-        <textarea name="description" id="" placeholder="Enter description:"></textarea>
-        <input name="image" type="text" placeholder="Enter URL of image">
-        <input name="price" type="number" placeholder="Enter price">
-        <input name="location" type="text" placeholder="Enter location">
-        <input name="country" type="text" placeholder="Enter country">
+    <form action="/listings" method="post">
+        <input name="listing[title]" type="text" placeholder="Enter title">
+        <textarea name="listing[description]" id="" placeholder="Enter description:"></textarea>
+        <input name="listing[image]" type="text" placeholder="Enter URL of image">
+        <input name="listing[price]" type="number" placeholder="Enter price">
+        <input name="listing[location]" type="text" placeholder="Enter location">
+        <input name="listing[country]" type="text" placeholder="Enter country">
         <button>create</button>
     </form>
 </body>

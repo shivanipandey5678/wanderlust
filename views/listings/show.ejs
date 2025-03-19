@@ -13,7 +13,7 @@
 
     <p><%=info_of_list.location%></p>
     <p><%=info_of_list.country%></p>
-    <a href="/listing/<%=info_of_list._id%>/edit">EDIT</a>
+    <a href="/listing/<%=info_of_list._id%>/editpage">EDIT</a>
     <form action="/listing/<%= info_of_list._id %>?_method=DELETE" method="post">
         <button>Delete</button>
     </form>
