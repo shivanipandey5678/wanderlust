@@ -34,9 +34,17 @@ app.get("/listings",async(req,res)=>{
    res.render("listings/index.ejs",{AllListings})
 })
 
-//create route
+//navugate to create page route
 app.get("/listing/new",async(req,res)=>{
     res.render("listings/create.ejs")
+})
+
+//craete route
+app.post("/listings",async(req,res)=>{
+    let listing=req.body.listing;
+    const newListing=new Listing(listing);
+    await newListing.save();
+    res.redirect("/listings")
 })
 
 //show route
@@ -49,13 +57,27 @@ app.get("/listing/:id",async(req,res)=>{
 
 
 //delete route
-app.delete("listing/:id",async(req,res)=>{
+app.delete("/listing/:id",async(req,res)=>{
     let {id}=req.params;
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings")
     
 })
 
+//navigate to edit page route
+app.get("/listing/:id/editpage",async(req,res)=>{
+    let {id}=req.params;
+    let searchList= await Listing.findById(id);
+    res.render("listings/editpage.ejs",{searchList})
+})
+
+//update route
+app.put("/listings/:id",async(req,res)=>{
+   let {id}=req.params;
+   let searchedList = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
+   res.redirect(`/listings/{id}`)
+
+})
 
 
 
