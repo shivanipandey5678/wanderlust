@@ -31,10 +31,11 @@ app.get("/health-check",(req,res)=>{
 //index route
 app.get("/listings",async(req,res)=>{
    const AllListings=await Listing.find({});
+//    console.log(AllListings)
    res.render("listings/index.ejs",{AllListings})
 })
 
-//navugate to create page route
+//navigate to create page route
 app.get("/listing/new",async(req,res)=>{
     res.render("listings/create.ejs")
 })
@@ -42,7 +43,7 @@ app.get("/listing/new",async(req,res)=>{
 //craete route
 app.post("/listings",async(req,res)=>{
     let listing=req.body.listing;
-    const newListing=new Listing(listing);
+    const newListing = new Listing(listing);
     await newListing.save();
     res.redirect("/listings")
 })
@@ -50,9 +51,12 @@ app.post("/listings",async(req,res)=>{
 //show route
 app.get("/listing/:id",async(req,res)=>{
     let {id}=req.params;
-    const info_of_list=await Listing.findById(id);
+    let info_of_list=await Listing.findById(id);
+    // console.log(info_of_list)
     res.render("listings/show.ejs",{info_of_list});
 })
+
+
 
 
 
@@ -68,14 +72,16 @@ app.delete("/listing/:id",async(req,res)=>{
 app.get("/listing/:id/editpage",async(req,res)=>{
     let {id}=req.params;
     let searchList= await Listing.findById(id);
+    console.log(searchList)
     res.render("listings/editpage.ejs",{searchList})
 })
 
 //update route
-app.put("/listings/:id",async(req,res)=>{
+app.put("/listing/:id",async(req,res)=>{
    let {id}=req.params;
-   let searchedList = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
-   res.redirect(`/listings/{id}`)
+   let updatedList=await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
+   console.log(updatedList)
+   res.redirect(`/listing/${id}`)
 
 })
 

@@ -7,7 +7,7 @@
 </head>
 <body>
     <h3><%=info_of_list.title%></h3>
-    <img src=<%=info_of_list.image.url%> alt="img_of_place" width="250px">
+    <img src="<%= info_of_list.image.url %>" alt="img_of_place" width="250px">
     <p><%=info_of_list.description%></p>
     <p> &#8377 <%= info_of_list.price.toLocaleString("en-IN") %></p>
 

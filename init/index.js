@@ -18,7 +18,7 @@ main()
 async function initDB(){
    await Listing.deleteMany({});
    await Listing.insertMany(sampleListings);
-   console.log(sampleListings)
+   
    console.log("data was initialized");
 }
 initDB();
