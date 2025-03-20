@@ -8,10 +8,11 @@
     <title>Edit Listing</title>
 </head>
 <body>
-    <form action="/listings/:id/edit" method="post">
+    <form action="/listing/<%=searchList._id%>?_method=PUT" method="post">
+        <!-- <h1><%=searchList._id%></h1> -->
         <input name="listing[title]" type="text" value="<%= searchList.title %>">
         <textarea><%= searchList.description %></textarea>
-        <input name="listing[image]" type="text" value="<%=searchList.image%>">
+        <input name="listing[image[url]]" type="text" value="<%=searchList.image.url%>">
         <input name="listing[price]" type="number" value="<%=searchList.price%>">
         <input name="listing[location]" type="text" value="<%=searchList.location%>">
         <input name="listing[country]" type="text" value="<%=searchList.country%>">
