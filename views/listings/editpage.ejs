@@ -1,12 +1,4 @@
-
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Listing</title>
-</head>
+<%  layout("/layouts/boilerplate") -%>
 <body>
     <form action="/listing/<%=searchList._id%>?_method=PUT" method="post">
         <!-- <h1><%=searchList._id%></h1> -->
@@ -19,4 +11,3 @@
         <button>Edit</button>
     </form>
 </body>
-</html>

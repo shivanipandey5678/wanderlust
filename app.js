@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const Listing=require("./Model/listings.js")
 const mongo_url = "mongodb://127.0.0.1:27017/mernproject";
 const path=require("path");
-
+const ejsMate=require("ejs-mate");
 const methodOverride = require("method-override");
 async function main(){
     await mongoose.connect(mongo_url);
@@ -22,10 +22,11 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method")); 
+app.use(express.static(path.join(__dirname,"/public")))
+app.engine('ejs',ejsMate);
 
-
-app.get("/health-check",(req,res)=>{
-    res.send("everything is great")
+app.get("/",(req,res)=>{
+    res.send("I'm the home ")
 })
 
 //index route
