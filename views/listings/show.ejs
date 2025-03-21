@@ -1,14 +1,36 @@
 <%  layout("/layouts/boilerplate") -%>
-<body>
-    <h3><%=info_of_list.title%></h3>
-    <img src="<%= info_of_list.image.url %>" alt="img_of_place" width="250px">
-    <p><%=info_of_list.description%></p>
-    <p> &#8377 <%= info_of_list.price.toLocaleString("en-IN") %></p>
+<br>
 
-    <p><%=info_of_list.location%></p>
-    <p><%=info_of_list.country%></p>
-    <a href="/listing/<%=info_of_list._id%>/editpage">EDIT</a>
-    <form action="/listing/<%= info_of_list._id %>?_method=DELETE" method="post">
-        <button>Delete</button>
-    </form>
+<body>
+    
+    <div class="row mb-6">
+            <div class="col-8 offset-2">
+             
+               <h3>Listing Details:</h3>
+            </div>
+            <div class="card col-6 offset-2" >
+                <img src="<%= info_of_list.image.url %>" class="img_of_place show-img" alt="...">
+                <div class="card-body">
+                <p class="card-text">
+                   <b><%=info_of_list.title%></b> <br>
+                   <%=info_of_list.description%> <br>
+                   &#8377 <%= info_of_list.price.toLocaleString("en-IN") %><br>
+                   <%=info_of_list.location%> <br>
+                   <%=info_of_list.country%>
+                </p>
+                </div>
+            </div>
+            <div class="btns col-6 offset-2 mb-6" >
+                <a href="/listing/<%=info_of_list._id%>/editpage " class="btn create-btn">EDIT</a>
+                <form action="/listing/<%= info_of_list._id %>?_method=DELETE" method="post">
+                    <button class="btn delete-btn">Delete</button>
+                </form>
+            </div>
+           
+           
+           
+    </div>
+
+   
 </body>
+<br>

@@ -72,6 +72,7 @@ body{
     /* cover:fit */
     height: 20rem;
     border-radius: 0.5rem;
+    object-fit: cover; 
 }
 
 .listing-link{
@@ -96,4 +97,26 @@ body{
 .create-btn{
     background-color: #fe424d   !important;
     padding: 0,5rem 1rem !important;
+    border: 1px solid black !important;
+    color: white !important;
+    margin-right: 1rem !important;
+}
+
+/* show page */
+.show-img{
+    height: 30vh;
+    object-fit: cover; 
+    border-radius: 1rem;
+}
+
+.btns{
+    display: flex;
+}
+
+.delete-btn{
+    background-color: black   !important;
+    padding: 0,5rem 1rem !important;
+    border: 1px solid white !important;
+    color: white !important;
+    margin-right: 1rem !important;
 }
