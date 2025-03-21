@@ -1,0 +1,54 @@
+/* navbar */
+.navbar{
+    height: 5rem;
+    background-color: white;
+  
+}
+.nav-link{
+    color:#222222  !important;
+}
+.navbar-brand{
+    color: #fe424d   !important;
+    font-size: 2rem   !important;
+  
+}
+/* FOOTER */
+.f-info-links a{
+   text-decoration: none;
+   color: #222222;
+   width: 100%;
+ 
+}
+.f-info-links{
+  width: 100%;
+}
+
+.f-info-links a:hover{
+   text-decoration: underline;
+}
+
+.f-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ebebeb;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 8rem;
+}
+
+.f-info-social{
+    width: 100%  !important;;
+    /* font-size: 1.2rem; */
+} 
+.f-info-social i{
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+.f-info-social i:hover{
+    transform: scale(1.5);
+   
+}
