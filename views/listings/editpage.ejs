@@ -3,41 +3,55 @@
     <div class="row">
         <div class="col-8 offset-2">
             <h3 class="mt-3">Edit Listing</h3>
-            <form action="/listing/<%= searchList._id %>?_method=PUT" method="post">
+            <form action="/listing/<%= searchList._id %>?_method=PUT" method="post" class="needs-validation" novalidate>
+                
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input name="listing[title]" id="title" type="text" value="<%= searchList.title %>" class="form-control">
+                    <input name="listing[title]" id="title" type="text" value="<%= searchList.title %>" class="form-control" required>
+                    <div class="invalid-feedback">Title is required.</div>
+                    <div class="valid-feedback">Looks good!</div>
                 </div>
-
+    
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea name="listing[description]" id="description" class="form-control"><%= searchList.description %></textarea>
+                    <textarea name="listing[description]" id="description" class="form-control" required><%= searchList.description %></textarea>
+                    <div class="invalid-feedback">Description is required.</div>
+                    <div class="valid-feedback">Looks good!</div>
                 </div>
-
+    
                 <div class="mb-3">
                     <label for="image" class="form-label">Image URL</label>
-                    <input name="listing[image[url]]" id="image" type="text" value="<%= searchList.image.url %>" class="form-control">
+                    <input name="listing[image[url]]" id="image" type="url" value="<%= searchList.image.url %>" class="form-control" required>
+                    <div class="invalid-feedback">Please enter a valid image URL.</div>
+                    <div class="valid-feedback">Valid image URL!</div>
                 </div>
                 
                 <div class="row">
                     <div class="mb-3 col-md-4">
                         <label for="price" class="form-label">Price</label>
-                        <input name="listing[price]" id="price" type="number" value="<%= searchList.price %>" class="form-control">
+                        <input name="listing[price]" id="price" type="number" value="<%= searchList.price %>" class="form-control" required>
+                        <div class="invalid-feedback">Price is required and must be a valid number.</div>
+                        <div class="valid-feedback">Looks good!</div>
                     </div>
                     
                     <div class="mb-3 col-md-8">
                         <label for="country" class="form-label">Country</label>
-                        <input name="listing[country]" id="country" type="text" value="<%= searchList.country %>" class="form-control">
+                        <input name="listing[country]" id="country" type="text" value="<%= searchList.country %>" class="form-control" required>
+                        <div class="invalid-feedback">Country is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
-                    <input name="listing[location]" id="location" type="text" value="<%= searchList.location %>" class="form-control">
+                    <input name="listing[location]" id="location" type="text" value="<%= searchList.location %>" class="form-control" required>
+                    <div class="invalid-feedback">Location is required.</div>
+                    <div class="valid-feedback">Looks good!</div>
                 </div>
-
-                <button class="btn btn-dark create-btn mb-3">Update</button>
+    
+                <button class="btn btn-dark create-btn mb-3" type="submit">Update</button>
             </form>
         </div>
     </div>
+    
 </body>
