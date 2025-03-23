@@ -8,6 +8,7 @@ const ejsMate=require("ejs-mate");
 const methodOverride = require("method-override");
 const wrapAsync=require("./utlis/wrapAsync.js");
 const ExpressError=require("./utlis/ExpressError.js");
+const listingSchema=require("./schema.js");
 async function main(){
     await mongoose.connect(mongo_url);
 };
@@ -31,6 +32,17 @@ app.get("/",(req,res)=>{
     res.send("I'm the home ")
 })
 
+const validateListing=((req,res,next)=>{
+    let {error}=listingSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map((el)=>el.message.join(","));
+        throw new ExpressError(400,errMsg);
+    }
+    else{
+       next()
+    }
+})
+
 //index route
 app.get("/listings",async(req,res)=>{
    const AllListings=await Listing.find({});
@@ -43,27 +55,11 @@ app.get("/listing/new",async(req,res)=>{
     res.render("listings/create.ejs")
 })
 
-//craete route
-// app.post("/listings",async(req,res,next)=>{
-//     try {
-//         let listing=req.body.listing;
-//         const newListing = new Listing(listing);
-//         // console.log(newListing)
-//         await newListing.save();
-//         res.redirect("/listings");
-//     } catch (error) {
-//         next(err);
-//     }
-    
-// })
 
-app.post("/listings",wrapAsync(async(req,res,next)=>{
-        if(!req.body.listing){
-            throw new ExpressError(400,"Send valid data for listinf")
-        }
+//craete route
+app.post("/listings",validateListing,wrapAsync(async(req,res,next)=>{
         let listing=req.body.listing;
         const newListing = new Listing(listing);
-        // console.log(newListing)
         await newListing.save();
         res.redirect("/listings");
    
@@ -99,10 +95,8 @@ app.get("/listing/:id/editpage",wrapAsync(async(req,res)=>{
 }));
 
 //update route
-app.put("/listing/:id",wrapAsync(async(req,res)=>{
-    if(!req.body.listing){
-        throw new ExpressError(400,"Send valid data for listinf")
-    }
+app.put("/listing/:id",validateListing,wrapAsync(async(req,res)=>{
+  
    let {id}=req.params;
    let updatedList=await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
    console.log(updatedList)
@@ -117,8 +111,7 @@ app.all("*",(req,res,next)=>{
 app.use((err,req,res,next)=>{
     let {statusCode=500,message="Something went wrong!"}=err;
     res.render("error.ejs",{statusCode,message})
-    // res.status(statusCode).send(message)
-    // res.send("something went wrong")
+    
 })
 
 app.listen(8080,()=>{
