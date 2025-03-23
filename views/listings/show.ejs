@@ -49,22 +49,24 @@
             </div>
             <hr class="mt-4">
             <div class="card col-6 offset-2 p-3">
-                <h4 class="mb-3">Reviews</h4>
-                <% if (info_of_list.reviews.length > 0) { %>
-                    <div class="list-group">
-                        <% for (review of info_of_list.reviews) { %>
-                            <div class="card mb-2 shadow-sm">
-                                <div class="card-body">
-                                    <h6 class="card-subtitle mb-2 text-muted">Rating: ⭐ <%= review.rating %> / 5</h6>
-                                    <p class="card-text"><%= review.comment %></p>
-                                </div>
+                <h4>Reviews</h4>
+                <ul class="list-group">
+                    <% for (review of info_of_list.reviews) { %>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Rating:</strong> <%= review.rating %> ⭐ <br>
+                                <strong>Comment:</strong> <%= review.comment %>
                             </div>
-                        <% } %>
-                    </div>
-                <% } else { %>
-                    <p class="text-muted">No reviews yet. Be the first to leave one!</p>
-                <% } %>
+                            <form action="/listing/<%= info_of_list._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                <button class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </li>
+                    <% } %>
+                </ul>
             </div>
+            
             
     
             
