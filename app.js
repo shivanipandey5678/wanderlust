@@ -9,6 +9,7 @@ const methodOverride = require("method-override");
 const wrapAsync=require("./utlis/wrapAsync.js");
 const ExpressError=require("./utlis/ExpressError.js");
 const listingSchema=require("./schema.js");
+const Review=require("./Model/reviews.js");
 async function main(){
     await mongoose.connect(mongo_url);
 };
@@ -103,6 +104,20 @@ app.put("/listing/:id",validateListing,wrapAsync(async(req,res)=>{
    res.redirect(`/listing/${id}`)
 
 }));
+
+//review
+//Post Review
+app.post("/listing/:id/reviews",async(req,res)=>{
+    let listing =await Listing.findById(req.params.id);
+    let newReview=new Review(req.body.review);
+    listing.reviews.push(newReview);
+
+    await newReview.save();
+    await listing.save();
+    // console.log("New Review Saved");
+    // res.send("New Review Saved")
+    res.redirect(`/listing/${req.params.id}`)
+})
 
 app.all("*",(req,res,next)=>{
    next(new ExpressError(404,"Page Not Found"));
