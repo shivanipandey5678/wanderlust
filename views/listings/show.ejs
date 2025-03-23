@@ -26,30 +26,50 @@
                     <button class="btn delete-btn">Delete</button>
                 </form>
             </div>
+            <hr class="mt-4">
+            <div class="card col-8 offset-2">
+                <h4>Leave a Review</h4>
+                <form action="/listing/<%=info_of_list._id%>/reviews" method="POST" class="needs-validation" novalidate>
+                    <div class="mb-3 mt-3">
+                        <label for="rating" class="form-label">Rating</label>
+                        <input type="range" min="1" max="5" name="review[rating]" id="rating" class="form-range"/>
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label for="comment" class="form-label">Comment</label>
+                        <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control w-100" required></textarea>
+                        <div class="invalid-feedback">
+                            Please enter a comment before submitting.
+                        </div>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-dark" type="submit">Submit</button>
+                </form>
+            </div>
+            <hr class="mt-4">
+            <div class="card col-6 offset-2 p-3">
+                <h4 class="mb-3">Reviews</h4>
+                <% if (info_of_list.reviews.length > 0) { %>
+                    <div class="list-group">
+                        <% for (review of info_of_list.reviews) { %>
+                            <div class="card mb-2 shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">Rating: ⭐ <%= review.rating %> / 5</h6>
+                                    <p class="card-text"><%= review.comment %></p>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } else { %>
+                    <p class="text-muted">No reviews yet. Be the first to leave one!</p>
+                <% } %>
+            </div>
+            
+    
             
            
            
-    </div>
-    <hr class="mt-4">
-    <div class="card col-8 offset-2">
-        <h4>Leave a Review</h4>
-        <form action="/listing/<%=info_of_list._id%>/reviews" method="POST" class="needs-validation" novalidate>
-            <div class="mb-3 mt-3">
-                <label for="rating" class="form-label">Rating</label>
-                <input type="range" min="1" max="5" name="review[rating]" id="rating" class="form-range"/>
-            </div>
-            <div class="mb-3 mt-3">
-                <label for="comment" class="form-label">Comment</label>
-                <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control w-100" required></textarea>
-                <div class="invalid-feedback">
-                    Please enter a comment before submitting.
-                </div>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
-            <button class="btn btn-outline-dark" type="submit">Submit</button>
-        </form>
     </div>
     
     
