@@ -6,6 +6,7 @@ const Listing=require("../Model/listings");
 const Review=require("../Model/reviews");
 const methodOverride = require("method-override");
 const {listingSchema,reviewSchema}=require("../schema.js");
+const flash=require("connect-flash");
 
 
 const validateListing=((req,res,next)=>{
@@ -26,25 +27,28 @@ const validateListing=((req,res,next)=>{
      res.render("listings/create.ejs")
  })
  
- 
 
- 
  //show route
  router.get("/:id",wrapAsync(async(req,res)=>{
      let {id}=req.params;
      let info_of_list=await Listing.findById(id).populate("reviews");
+     if(!info_of_list){
+        req.flash("error","not found 404");
+        res.redirect("/listings")
+     }
      // console.log(info_of_list)
      res.render("listings/show.ejs",{info_of_list});
  }));
  
- 
- 
- 
- 
  //delete route
  router.delete("/:id",wrapAsync(async(req,res)=>{
      let {id}=req.params;
-     await Listing.findByIdAndDelete(id);
+     let searchList= await Listing.findByIdAndDelete(id);
+     if(!searchList){
+        req.flash("error","not found 404");
+        res.redirect("/listings")
+     }
+     req.flash("success"," Listing Deleted!");
      res.redirect("/listings")
      
  }));
@@ -53,6 +57,10 @@ const validateListing=((req,res,next)=>{
  router.get("/:id/editpage",wrapAsync(async(req,res)=>{
      let {id}=req.params;
      let searchList= await Listing.findById(id);
+     if(!searchList){
+        req.flash("error","not found 404");
+        res.redirect("/listings")
+     }
      console.log(searchList)
      res.render("listings/editpage.ejs",{searchList})
  }));
@@ -62,7 +70,11 @@ const validateListing=((req,res,next)=>{
    
     let {id}=req.params;
     let updatedList=await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
-    console.log(updatedList)
+    if(!updatedList){
+        req.flash("error","not found 404");
+        res.redirect("/listings")
+     }
+    req.flash("success"," Listing Updated!");
     res.redirect(`/listing/${id}`)
  
  }));
