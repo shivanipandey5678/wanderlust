@@ -6,6 +6,7 @@ const Listing=require("../Model/listings");
 const Review=require("../Model/reviews");
 const methodOverride = require("method-override");
 const {listingSchema,reviewSchema}=require("../schema.js");
+const flash=require("connect-flash");
 
 const validateReview=((req,res,next)=>{
     let {error}=reviewSchema.validate(req.body);
@@ -28,6 +29,7 @@ const validateReview=((req,res,next)=>{
  
      await newReview.save();
      await listing.save();
+     req.flash("success","New Review created!");
      // console.log("New Review Saved");
      // res.send("New Review Saved")
      res.redirect(`/listing/${req.params.id}`)
@@ -41,7 +43,7 @@ const validateReview=((req,res,next)=>{
     let {id,reviewId}=req.params;
     await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}})
     await Review.findByIdAndDelete(reviewId);
-   
+    req.flash("success"," Review Deleted!");
     res.redirect(`/listing/${req.params.id}`)
 }))
 
