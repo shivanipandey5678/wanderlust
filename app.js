@@ -9,6 +9,7 @@ const ExpressError=require("./utlis/ExpressError.js");
 const listing=require("./Routes/listing.js");
 const listings=require("./Routes/listings.js");
 const reviews=require("./Routes/reviews.js");
+const session=require("express-session");
 async function main(){
     await mongoose.connect(mongo_url);
 };
@@ -30,6 +31,14 @@ app.use("/listing",listing);
 app.use("/listings",listings);
 app.use("/listing/:id/reviews",reviews);
 app.engine('ejs',ejsMate);
+
+
+const sessionOption={
+    secret:"mySecretKey",
+    resave:false,
+    saveUninitialized:true
+}
+app.use(session(sessionOption));
 
 app.get("/",(req,res)=>{
     res.send("I'm the home ")
