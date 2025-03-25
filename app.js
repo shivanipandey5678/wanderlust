@@ -10,6 +10,7 @@ const listing=require("./Routes/listing.js");
 const listings=require("./Routes/listings.js");
 const reviews=require("./Routes/reviews.js");
 const session=require("express-session");
+const flash=require("connect-flash");
 async function main(){
     await mongoose.connect(mongo_url);
 };
@@ -27,23 +28,34 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method")); 
 app.use(express.static(path.join(__dirname,"/public")))
-app.use("/listing",listing);
-app.use("/listings",listings);
-app.use("/listing/:id/reviews",reviews);
+
+app.use(flash());
 app.engine('ejs',ejsMate);
 
 
 const sessionOption={
     secret:"mySecretKey",
     resave:false,
-    saveUninitialized:true
+    saveUninitialized:true,
+    cookie:{
+        expires:Date.now()+7*24*60*60*1000,
+        maxAge:7*24*60*60*1000,
+        httpOnly:true
+    }
 }
-app.use(session(sessionOption));
 
 app.get("/",(req,res)=>{
     res.send("I'm the home ")
 })
+app.use(session(sessionOption));
+app.use((req,res,next)=>{
+    res.locals.success=req.flash("success");
+    next()
+})
 
+app.use("/listing",listing);
+app.use("/listings",listings);
+app.use("/listing/:id/reviews",reviews);
 
 app.all("*",(req,res,next)=>{
    next(new ExpressError(404,"Page Not Found"));

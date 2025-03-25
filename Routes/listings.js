@@ -6,6 +6,7 @@ const Listing=require("../Model/listings");
 const Review=require("../Model/reviews");
 const methodOverride = require("method-override");
 const {listingSchema,reviewSchema}=require("../schema.js");
+const flash=require("connect-flash");
 
 const validateListing=((req,res,next)=>{
     let {error}=listingSchema.validate(req.body);
@@ -33,6 +34,7 @@ router.get("/",async(req,res)=>{
          let listing=req.body.listing;
          const newListing = new Listing(listing);
          await newListing.save();
+         req.flash("success","New Listing created!");
          res.redirect("/listings");
     
      
