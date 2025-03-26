@@ -9,8 +9,12 @@ const ExpressError=require("./utlis/ExpressError.js");
 const listing=require("./Routes/listing.js");
 const listings=require("./Routes/listings.js");
 const reviews=require("./Routes/reviews.js");
+const userRouter=require("./Routes/user.js")
 const session=require("express-session");
 const flash=require("connect-flash");
+const passport=require("passport");
+const LocalStrategy=require("passport-local");
+const User=require("./Model/users.js");
 async function main(){
     await mongoose.connect(mongo_url);
 };
@@ -31,6 +35,13 @@ app.use(express.static(path.join(__dirname,"/public")))
 
 app.use(flash());
 app.engine('ejs',ejsMate);
+app.use(passport.initialize());
+passport.session();
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 
 const sessionOption={
@@ -54,9 +65,22 @@ app.use((req,res,next)=>{
     next()
 })
 
+app.get("/demouser",async(req,res)=>{
+    let fakeUser=new User({
+      email:"student3@gmail.com",
+      username:"momo"
+    })
+
+    let registerUser=await User.register(fakeUser,"myPass");
+    console.log(registerUser)
+    res.send(registerUser)
+})
+
+
 app.use("/listing",listing);
 app.use("/listings",listings);
 app.use("/listing/:id/reviews",reviews);
+app.use("/signup",userRouter);
 
 app.all("*",(req,res,next)=>{
    next(new ExpressError(404,"Page Not Found"));
