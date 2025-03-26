@@ -18,25 +18,21 @@ const validateListing=((req,res,next)=>{
        next()
     }
 })
+// Index Route - Display All Listings
+router.get("/", async (req, res) => {
+    const AllListings = await Listing.find({});
+    console.log(AllListings);
+    res.render("listings/index.ejs", { AllListings });
+});
 
-//index route
-router.get("/",async(req,res)=>{
-    const AllListings=await Listing.find({});
-    console.log(AllListings)
-    res.render("listings/index.ejs",{AllListings})
- });
- 
- 
- 
- 
- //craete route
- router.post("/",validateListing,wrapAsync(async(req,res,next)=>{
-         let listing=req.body.listing;
-         const newListing = new Listing(listing);
-         await newListing.save();
-         req.flash("success","New Listing created!");
-         res.redirect("/listings");
+// Create Route - Add a New Listing
+router.post("/", validateListing, wrapAsync(async (req, res, next) => {
+    let listing = req.body.listing;
+    const newListing = new Listing(listing);
+    await newListing.save();
     
-     
- }));
- module.exports=router;
+    req.flash("success", "Your listing has been successfully created! 🚀 Check it out below.");
+    res.redirect("/listings");
+}));
+
+module.exports = router;
