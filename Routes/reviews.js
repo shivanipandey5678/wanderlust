@@ -7,6 +7,7 @@ const Review=require("../Model/reviews");
 const methodOverride = require("method-override");
 const {listingSchema,reviewSchema}=require("../schema.js");
 const flash=require("connect-flash");
+const {isLoggedIn} =require("../middleware.js")
 
 const validateReview=((req,res,next)=>{
     let {error}=reviewSchema.validate(req.body);
@@ -20,7 +21,7 @@ const validateReview=((req,res,next)=>{
 })
 
 // Post Review
-router.post("/", validateReview, wrapAsync(async (req, res) => {
+router.post("/", validateReview, isLoggedIn,wrapAsync(async (req, res) => {
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
     listing.reviews.push(newReview);
@@ -32,7 +33,7 @@ router.post("/", validateReview, wrapAsync(async (req, res) => {
 }));
 
 // Delete Review
-router.delete("/:reviewId", wrapAsync(async (req, res) => {
+router.delete("/:reviewId",isLoggedIn, wrapAsync(async (req, res) => {
     let { id, reviewId } = req.params;
     await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId);

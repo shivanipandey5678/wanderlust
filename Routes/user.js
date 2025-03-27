@@ -30,6 +30,7 @@ router.get("/login", (req, res) => {
 
 router.post("/login",passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),
 async(req,res)=>{
+    
     req.flash("success","Welcome back to wanderLust");
     res.redirect("/listings")
 })
@@ -38,14 +39,24 @@ async(req,res)=>{
 
 router.get("/users", async (req, res) => {
     try {
-       
-
         const users = await User.find({}); // Fetch all users from the database
         res.send(users); // Send the user data as response
     } catch (error) {
         console.error("Error fetching users:", error);
         res.status(500).send("Internal Server Error");
     }
+});
+
+
+router.get("/logout", async (req, res,next) => {
+   req.logout((err)=>{
+      if(err){
+        next(err)
+      }
+      req.flash("success","You are logged out!")
+      res.redirect("/listings")
+
+   })
 });
 
 
