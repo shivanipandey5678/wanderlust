@@ -33,6 +33,9 @@ app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method")); 
 app.use(express.static(path.join(__dirname,"/public")))
 
+app.use(express.json());  // Ensure JSON requests are parsed correctly
+
+
 app.use(flash());
 app.engine('ejs',ejsMate);
 app.use(passport.initialize());
@@ -65,22 +68,12 @@ app.use((req,res,next)=>{
     next()
 })
 
-app.get("/demouser",async(req,res)=>{
-    let fakeUser=new User({
-      email:"student3@gmail.com",
-      username:"momo"
-    })
-
-    let registerUser=await User.register(fakeUser,"myPass");
-    console.log(registerUser)
-    res.send(registerUser)
-})
 
 
 app.use("/listing",listing);
 app.use("/listings",listings);
 app.use("/listing/:id/reviews",reviews);
-app.use("/signup",userRouter);
+app.use("/",userRouter);
 
 app.all("*",(req,res,next)=>{
    next(new ExpressError(404,"Page Not Found"));
