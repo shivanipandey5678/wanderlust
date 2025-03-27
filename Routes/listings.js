@@ -21,7 +21,7 @@ const validateListing=((req,res,next)=>{
 // Index Route - Display All Listings
 router.get("/", async (req, res) => {
     const AllListings = await Listing.find({});
-    console.log(AllListings);
+    
     res.render("listings/index.ejs", { AllListings });
 });
 
