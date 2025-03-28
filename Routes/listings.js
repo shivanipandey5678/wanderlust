@@ -7,6 +7,7 @@ const Review=require("../Model/reviews");
 const methodOverride = require("method-override");
 const {listingSchema,reviewSchema}=require("../schema.js");
 const flash=require("connect-flash");
+const {isLoggedIn} =require("../middleware.js")
 
 const validateListing=((req,res,next)=>{
     let {error}=listingSchema.validate(req.body);
@@ -21,12 +22,11 @@ const validateListing=((req,res,next)=>{
 // Index Route - Display All Listings
 router.get("/", async (req, res) => {
     const AllListings = await Listing.find({});
-    
     res.render("listings/index.ejs", { AllListings });
 });
 
 // Create Route - Add a New Listing
-router.post("/", validateListing, wrapAsync(async (req, res, next) => {
+router.post("/", validateListing,isLoggedIn, wrapAsync(async (req, res, next) => {
     let listing = req.body.listing;
     const newListing = new Listing(listing);
     await newListing.save();
