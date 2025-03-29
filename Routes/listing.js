@@ -27,11 +27,12 @@ router.get("/new",isLoggedIn, async (req, res) => {
 // Show route
 router.get("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
-    let info_of_list = await Listing.findById(id).populate("reviews");
+    let info_of_list = await Listing.findById(id).populate("reviews").populate("owner");
     if (!info_of_list) {
         req.flash("error", "The requested listing does not exist.");
         return res.redirect("/listings");
     }
+    console.log(info_of_list)
     res.render("listings/show.ejs", { info_of_list });
 }));
 
