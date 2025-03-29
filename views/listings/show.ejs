@@ -12,6 +12,7 @@
                 <img src="<%= info_of_list.image.url %>" class="img_of_place show-img" alt="...">
                 <div class="card-body">
                 <p class="card-text">
+                    <p><i>Owned by : <%= info_of_list.owner.username%></i></p>
                   
                    <%=info_of_list.description%> <br>
                    &#8377 <%= info_of_list.price.toLocaleString("en-IN") %><br>

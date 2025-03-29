@@ -29,6 +29,7 @@ router.get("/", async (req, res) => {
 router.post("/", validateListing,isLoggedIn, wrapAsync(async (req, res, next) => {
     let listing = req.body.listing;
     const newListing = new Listing(listing);
+    newListing.owner=req.user._id;
     await newListing.save();
     
     req.flash("success", "Your listing has been successfully created! 🚀 Check it out below.");
