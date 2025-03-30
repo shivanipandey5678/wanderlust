@@ -1,3 +1,4 @@
+const Listing =require("./Model/listings");
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
         if (!req.session.redirectUrl) {
@@ -31,3 +32,13 @@ module.exports.settingRedirectUrl = (req, res, next) => {
     next();
 };
 
+
+module.exports.isOwner = async(req,res,next) => {
+    let { id } = req.params;
+    let listing=await Listing.findById(id);
+    if(res.locals.currentUser && !(listing.owner._id.equals(res.locals.currentUser._id))){
+        req.flash("error","You are not authorized to edit this listing. Please check your permissions or contact support.");
+        return res.redirect(`/listing/${id}`)
+    }
+    next()
+}

@@ -7,7 +7,7 @@ const Review=require("../Model/reviews");
 const methodOverride = require("method-override");
 const {listingSchema,reviewSchema}=require("../schema.js");
 const flash=require("connect-flash");
-const {isLoggedIn} =require("../middleware.js")
+const {isLoggedIn,isOwner} =require("../middleware.js")
 const validateListing = (req, res, next) => {
     let { error } = listingSchema.validate(req.body);
     if (error) {
@@ -37,7 +37,7 @@ router.get("/:id", wrapAsync(async (req, res) => {
 }));
 
 // Delete route
-router.delete("/:id",isLoggedIn, wrapAsync(async (req, res) => {
+router.delete("/:id",isLoggedIn, isOwner,wrapAsync(async (req, res) => {
     let { id } = req.params;
     let searchList = await Listing.findByIdAndDelete(id);
     if (!searchList) {
@@ -49,7 +49,7 @@ router.delete("/:id",isLoggedIn, wrapAsync(async (req, res) => {
 }));
 
 // Navigate to edit page route
-router.get("/:id/editpage",isLoggedIn, wrapAsync(async (req, res) => {
+router.get("/:id/editpage",isLoggedIn,isOwner, wrapAsync(async (req, res) => {
     let { id } = req.params;
     let searchList = await Listing.findById(id);
     if (!searchList) {
@@ -61,7 +61,7 @@ router.get("/:id/editpage",isLoggedIn, wrapAsync(async (req, res) => {
 }));
 
 // Update route
-router.put("/:id",isLoggedIn, wrapAsync(async (req, res) => {
+router.put("/:id",isLoggedIn,isOwner, wrapAsync(async (req, res) => {
     let { id } = req.params;
     let updatedList = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
     if (!updatedList) {
