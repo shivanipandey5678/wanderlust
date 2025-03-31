@@ -9,6 +9,9 @@ const {listingSchema,reviewSchema}=require("../schema.js");
 const flash=require("connect-flash");
 const {isLoggedIn} =require("../middleware.js")
 const listingController=require("../controllers/listings.js")
+const multer=require("multer");
+const {storage}=require("../cloudConfig.js");
+const upload=multer({storage})
 const validateListing=((req,res,next)=>{
     let {error}=listingSchema.validate(req.body);
     if(error){
@@ -25,7 +28,9 @@ const validateListing=((req,res,next)=>{
 router.route("/")
    .get( wrapAsync(listingController.index))
 //    .post( validateListing,isLoggedIn, wrapAsync(listingController.createListing));
-   .post((req,res)=>{res.send(req.body)});
+   .post(upload.single('listing[image][url]'),(req,res)=>{
+      res.send(req.file);
+   });
 
 
 
