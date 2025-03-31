@@ -7,7 +7,9 @@ const Review=require("../Model/reviews");
 const methodOverride = require("method-override");
 const {listingSchema,reviewSchema}=require("../schema.js");
 const flash=require("connect-flash");
-const {isLoggedIn,isOwner} =require("../middleware.js")
+const {isLoggedIn,isOwner} =require("../middleware.js");
+const listingController=require("../controllers/listings.js");
+
 const validateListing = (req, res, next) => {
     let { error } = listingSchema.validate(req.body);
     if (error) {
@@ -19,57 +21,19 @@ const validateListing = (req, res, next) => {
 };
 
 // Navigate to create page route
-router.get("/new",isLoggedIn, async (req, res) => {
-    res.render("listings/create.ejs");
-});
+router.get("/new",isLoggedIn,wrapAsync(listingController.NavigateToCreatePage) );
 
 
 // Show route
-router.get("/:id", wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let info_of_list = await Listing.findById(id).populate("reviews").populate("owner");
-    if (!info_of_list) {
-        req.flash("error", "The requested listing does not exist.");
-        return res.redirect("/listings");
-    }
-    console.log(info_of_list)
-    res.render("listings/show.ejs", { info_of_list });
-}));
+router.get("/:id", wrapAsync(listingController.ShowSingleList));
 
 // Delete route
-router.delete("/:id",isLoggedIn, isOwner,wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let searchList = await Listing.findByIdAndDelete(id);
-    if (!searchList) {
-        req.flash("error", "Unable to delete. The listing was not found.");
-        return res.redirect("/listings");
-    }
-    req.flash("success", "Listing deleted successfully! Hope to see a new one soon. 😊");
-    res.redirect("/listings");
-}));
+router.delete("/:id",isLoggedIn, isOwner,wrapAsync(listingController.DestroySingleList));
 
 // Navigate to edit page route
-router.get("/:id/editpage",isLoggedIn,isOwner, wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let searchList = await Listing.findById(id);
-    if (!searchList) {
-        req.flash("error", "The listing you are trying to edit does not exist.");
-        return res.redirect("/listings");
-    }
-    console.log(searchList);
-    res.render("listings/editpage.ejs", { searchList });
-}));
+router.get("/:id/editpage",isLoggedIn,isOwner, wrapAsync(listingController.NavigateToEditPage));
 
 // Update route
-router.put("/:id",isLoggedIn,isOwner, wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let updatedList = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
-    if (!updatedList) {
-        req.flash("error", "Unable to update. The listing was not found.");
-        return res.redirect("/listings");
-    }
-    req.flash("success", "Listing updated successfully! 🎉 Check out the new details.");
-    res.redirect(`/listing/${id}`);
-}));
+router.put("/:id",isLoggedIn,isOwner, wrapAsync(listingController.UpdateList));
 
 module.exports = router;

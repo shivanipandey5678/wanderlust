@@ -8,7 +8,7 @@ const methodOverride = require("method-override");
 const {listingSchema,reviewSchema}=require("../schema.js");
 const flash=require("connect-flash");
 const {isLoggedIn} =require("../middleware.js")
-
+const listingController=require("../controllers/listings.js")
 const validateListing=((req,res,next)=>{
     let {error}=listingSchema.validate(req.body);
     if(error){
@@ -20,20 +20,9 @@ const validateListing=((req,res,next)=>{
     }
 })
 // Index Route - Display All Listings
-router.get("/", async (req, res) => {
-    const AllListings = await Listing.find({});
-    res.render("listings/index.ejs", { AllListings });
-});
+router.get("/", wrapAsync(listingController.index));
 
 // Create Route - Add a New Listing
-router.post("/", validateListing,isLoggedIn, wrapAsync(async (req, res, next) => {
-    let listing = req.body.listing;
-    const newListing = new Listing(listing);
-    newListing.owner=req.user._id;
-    await newListing.save();
-    
-    req.flash("success", "Your listing has been successfully created! 🚀 Check it out below.");
-    res.redirect("/listings");
-}));
+router.post("/", validateListing,isLoggedIn, wrapAsync(listingController.createListing));
 
 module.exports = router;

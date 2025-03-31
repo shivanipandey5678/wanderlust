@@ -49,9 +49,7 @@ const sessionOption={
     }
 }
 
-app.get("/",(req,res)=>{
-    res.send("I'm the home ")
-});
+
 
 app.use(session(sessionOption));
 app.use(flash());

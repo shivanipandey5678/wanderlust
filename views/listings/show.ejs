@@ -29,7 +29,9 @@
                 </form>
             </div>
             <%}%>
+            <% if(currentUser){%>
             <hr class="mt-4">
+           
             <div class="card col-8 offset-2">
                 <h4>Leave a Review</h4>
                 <form action="/listing/<%=info_of_list._id%>/reviews" method="POST" class="needs-validation" novalidate>
@@ -50,26 +52,36 @@
                     <button class="btn btn-outline-dark" type="submit">Submit</button>
                 </form>
             </div>
+            <%}%>
             <hr class="mt-4">
+           
             <div class="card col-6 offset-2 p-3">
                 <h4>Reviews</h4>
-                <ul class="list-group">
-                    <% for (review of info_of_list.reviews) { %>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong>Rating:</strong> <%= review.rating %> ⭐ <br>
-                                <strong>Comment:</strong> <%= review.comment %>
-                            </div>
-                            <form action="/listing/<%= info_of_list._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                                <button class="btn btn-outline-danger btn-sm">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                        </li>
+                <% if (!info_of_list.reviews || info_of_list.reviews.length === 0) { %>
+                    <p class="text-muted">No reviews present.</p>
+                <% } else { %>
+                        <ul class="list-group">
+                            <% for (let review of info_of_list.reviews) { %>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Rating:</strong> <%= review.rating %> ⭐ <br>
+                                        <strong>Comment:</strong> <%= review.comment %> <br>
+                                        <p><strong>Author:</strong> <%= review.author.username %></p>
+                                    </div>
+                                    <% if (currentUser && currentUser._id.equals(review.author._id)) { %>
+                                    <form action="/listing/<%= info_of_list._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                        <button class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                    <%}%>
+                                    
+                                </li>
+                            <% } %>
+                        </ul>
                     <% } %>
-                </ul>
-            </div>
-            
+                </div>
+             
             
     
             
