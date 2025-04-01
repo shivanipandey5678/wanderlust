@@ -7,7 +7,10 @@ const Review=require("../Model/reviews");
 const methodOverride = require("method-override");
 const {listingSchema,reviewSchema}=require("../schema.js");
 const flash=require("connect-flash");
-const {isLoggedIn,isReviewAuthor} =require("../middleware.js")
+const {isLoggedIn,isReviewAuthor} =require("../middleware.js");
+const  reviewController=require("../controllers/reviews.js")
+
+
 
 const validateReview=((req,res,next)=>{
     let {error}=reviewSchema.validate(req.body);
@@ -21,26 +24,9 @@ const validateReview=((req,res,next)=>{
 })
 
 // Post Review
-router.post("/", validateReview, isLoggedIn,wrapAsync(async (req, res) => {
-    let listing = await Listing.findById(req.params.id);
-    let newReview = new Review(req.body.review);
-    newReview.author=req.user._id;
-    listing.reviews.push(newReview);
-
-    await newReview.save();
-    await listing.save();
-    req.flash("success", "Your review has been added! Thank you for sharing your thoughts. 😊");
-    res.redirect(`/listing/${req.params.id}`);
-}));
+router.post("/", validateReview, isLoggedIn,wrapAsync(reviewController.PostReview));
 
 // Delete Review
-router.delete("/:reviewId",isLoggedIn,isReviewAuthor, wrapAsync(async (req, res) => {
-    let { id, reviewId } = req.params;
-    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    
-    req.flash("success", "Review deleted successfully! We appreciate your feedback. 👍");
-    res.redirect(`/listing/${req.params.id}`);
-}));
+router.delete("/:reviewId",isLoggedIn,isReviewAuthor, wrapAsync(reviewController.destroy));
 
 module.exports = router;
