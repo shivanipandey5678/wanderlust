@@ -20,20 +20,18 @@ const validateListing = (req, res, next) => {
     }
 };
 
+router.route("/:id")
+.get( wrapAsync(listingController.ShowSingleList))
+.delete(isLoggedIn, isOwner,wrapAsync(listingController.DestroySingleList))
+.put(isLoggedIn,isOwner, wrapAsync(listingController.UpdateList));
+
+
 // Navigate to create page route
 router.get("/new",isLoggedIn,wrapAsync(listingController.NavigateToCreatePage) );
 
 
-// Show route
-router.get("/:id", wrapAsync(listingController.ShowSingleList));
-
-// Delete route
-router.delete("/:id",isLoggedIn, isOwner,wrapAsync(listingController.DestroySingleList));
-
 // Navigate to edit page route
 router.get("/:id/editpage",isLoggedIn,isOwner, wrapAsync(listingController.NavigateToEditPage));
 
-// Update route
-router.put("/:id",isLoggedIn,isOwner, wrapAsync(listingController.UpdateList));
 
 module.exports = router;

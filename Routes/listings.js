@@ -20,9 +20,12 @@ const validateListing=((req,res,next)=>{
     }
 })
 // Index Route - Display All Listings
-router.get("/", wrapAsync(listingController.index));
-
 // Create Route - Add a New Listing
-router.post("/", validateListing,isLoggedIn, wrapAsync(listingController.createListing));
+
+router.route("/")
+   .get( wrapAsync(listingController.index))
+   .post( validateListing,isLoggedIn, wrapAsync(listingController.createListing));
+
+
 
 module.exports = router;
