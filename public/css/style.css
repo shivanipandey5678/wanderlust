@@ -19,6 +19,7 @@ body{
 .navbar-brand{
     color: #fe424d   !important;
     font-size: 2rem   !important;
+    
   
 }
 /* FOOTER */
@@ -71,7 +72,7 @@ body{
     width: 100%;
     /* cover:fit */
     height: 20rem;
-    border-radius: 0.5rem;
+   
     object-fit: cover; 
 }
 
@@ -120,3 +121,78 @@ body{
     color: white !important;
     margin-right: 1rem !important;
 }
+
+/* map */
+#map { height: 400px; width: 60vw; }
+
+/* navbar */
+/* Apply glassy transparent background with extreme blur effect */
+.navbar {
+    background: rgba(255, 255, 255, 0.6); /* More transparent white */
+    backdrop-filter: blur(30px); /* Increase blur effect for stronger glass effect */
+    -webkit-backdrop-filter: blur(30px); /* Safari support */
+    transition: background 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Make navbar items bold */
+.nav-link {
+    font-weight: bold;
+    
+}
+
+.nav-link:hover{
+    color: #fe424d;
+}
+
+/* Navbar dropdown adjustments */
+.navbar-nav {
+    position: relative; /* Ensures the dropdown is positioned correctly */
+}
+
+/* Apply glassy transparent background with extreme blur effect to dropdown items */
+.navbar-nav .nav-item .dropdown-menu {
+    background-color: pink; /* Semi-transparent background */
+    backdrop-filter: blur(30px); /* Strong blur effect */
+    -webkit-backdrop-filter: blur(30px); /* Safari support */
+    border-radius: 8px; /* Rounded corners for dropdown */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: adds subtle shadow to dropdown */
+    padding: 10px 0; /* Optional: space between items */
+}
+
+/* Additional styling for navbar dropdown when toggled */
+.navbar-nav .nav-item .dropdown-menu a {
+    color: #fff; /* Ensure text is visible on the transparent background */
+    font-weight: bold; /* Make options bold */
+    padding: 8px 16px; /* Space out the links */
+    text-decoration: none; /* Remove underline */
+}
+
+.navbar-nav .nav-item .dropdown-menu a:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Subtle hover effect */
+}
+
+
+
+/* Adjust navbar for small screens */
+@media (max-width: 768px) {
+    .navbar-nav {
+        text-align: center;
+    }
+    .navbar-nav .nav-link {
+        padding: 10px; /* Add padding to space out the links */
+    }
+    .navbar-toggler {
+        margin-right: 20px; /* Adjust the position of the hamburger menu */
+    }
+}
+
+
+/* search input */
+.serch-inp{
+    box-shadow: 3px 3px 10px rgba(128, 128, 128, 0.5); /* Soft gray shadow */
+    border: black;
+}
+
+
+/* show .ejs  */
+

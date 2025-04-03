@@ -16,3 +16,29 @@
       }, false)
     })
   })()
+
+
+  
+   // search functionality
+   let searchBox= document.querySelector(".serch-inp");
+   let btnSearch = document.querySelector(".btn-search");
+ 
+   btnSearch.addEventListener("click", (event) => {
+       event.preventDefault(); 
+ 
+       let searchValue = searchBox.value.trim(); 
+ 
+       if (searchValue) {
+           
+           let queryParam = encodeURIComponent(searchValue); 
+           window.location.href = `/listings?category=${queryParam}`; 
+       } else {
+           alert(" Click on search input and Please select a category from the dropdown!"); // Handle empty input
+       }
+ });
+
+
+ 
+
+
+

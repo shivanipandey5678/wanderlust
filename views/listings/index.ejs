@@ -1,9 +1,233 @@
 <%  layout("/layouts/boilerplate") -%>
+<style>
+    #filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  
+    width: 100%;  /* Ensures it covers the full width */
+    justify-content: space-between;  /* Distributes filters evenly */
+}
+
+    .filter{
+        margin-right: 2rem;
+        text-align: center;
+        opacity: 0.7;
+    }
+    .filter:hover{
+        opacity: 1.5;
+        color: black;
+    }
+    .tax-info{
+        display: none;
+    }
+    .tax-toggle {
+    height: 3rem;
+    max-width: 300px;
+    border: 1px solid black;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-left: 5rem;
+    display: flex; /* Ensures flexbox alignment */
+    align-items: center; /* Centers content vertically */
+    justify-content: center; /* Centers content horizontally if needed */
+    box-shadow: 3px 3px 10px rgba(128, 128, 128, 0.5); /* Soft gray shadow */
+    background-color: white; /* Ensures visibility */
+}
+.card{
+    box-shadow: 3px 3px 10px rgba(128, 128, 128, 0.5) !important;
+    margin-bottom: 3rem;
+    border-radius: 1.5rem;
+}
+.card-img-top{
+    /* border-radius-: 1.5rem !important; */
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+}
+#filters .filter a{
+    text-decoration: none;
+    color: rgb(60, 57, 57);
+    opacity: 0.7;
+   
+}
+
+
+.dropdown-toggle{
+    background-color:#fe424d !important ;
+    margin: 0px;
+}
+
+#serchdivSmallScreen{
+    
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+
+}
+
+#categoryMenuAndSearchBoxDiv{
+    
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    width: 100%;
+}
+
+
+    
+
+
+</style>
     <br>
-    <h3 class=" mb-3" >Listing page</h3>
+    <body>
+        
+   
+    <div class="row2">
+      <!-- Small & Medium Screen Dropdown -->
+      <div class="d-flex " id="categoryMenuAndSearchBoxDiv">
+        <div class="dropdown d-lg-none  my-3 mb-8" id="filterDropmenu ">
+            <button class="btn btn-primary dropdown-toggle mb-8" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Select Category
+            </button>
+            <ul class="dropdown-menu " aria-labelledby="filterDropdown">
+                <li><a class="dropdown-item" href="/listings?category=hotel">Hotels & Stays</a></li>
+                <li><a class="dropdown-item" href="/listings?category=city">Metropolitan Cities</a></li>
+                <li><a class="dropdown-item" href="/listings?category=mountain">Mountain Retreats</a></li>
+                <li><a class="dropdown-item" href="/listings?category=historical">Historical Castles</a></li>
+                <li><a class="dropdown-item" href="/listings?category=beach">Beach Resorts</a></li>
+                <li><a class="dropdown-item" href="/listings?category=lakeside">Lakeside Homes</a></li>
+                <li><a class="dropdown-item" href="/listings?category=forest">Forest Getaways</a></li>
+                <li><a class="dropdown-item" href="/listings?category=luxury">Luxury Villas</a></li>
+                <li><a class="dropdown-item" href="/listings?category=igloo">Arctic Igloos</a></li>
+                <li><a class="dropdown-item" href="/listings?category=exotic">Exotic Stays</a></li>
+                <li><a class="dropdown-item" href="/listings?category=skiing">Ski & Snow Resorts</a></li>
+                <li><a class="dropdown-item" href="/listings?category=tropical">Tropical Islands</a></li>
+                <li><a class="dropdown-item" href="/listings?category=rainforest">Rainforests</a></li>
+            </ul>
+            
+        </div>
+        <div class="ms-auto  " >
+            <form class="d-lg-none"id="serchdivSmallScreen">
+              <input class="form-control me-2 serch-inp" id="searchBox" type="text" placeholder="Choose from dropdown " aria-label="Search" list="Destinations">
+              <datalist id="Destinations">
+                <option value="hotel"></option>
+                <option value="city"></option>
+                <option value="mountain"></option>
+                <option value="historical"></option>
+                <option value="beach"></option>
+                <option value="lakeside"></option>
+                <option value="forest"></option>
+                <option value="luxury"></option>
+                <option value="igloo"></option>
+                <option value="exotic"></option>
+                <option value="skiing"></option>
+                <option value="tropical"></option>
+                <option value="rainforest"></option>
+    
+              </datalist>
+              <button class="btn btn-search" type="submit" id="searchBtn">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>Search
+              </button>
+            </form>
+          </div>
+    </div>
+    <div id="filters" class="d-none d-lg-block d-lg-flex ">
+        <div class="filter">
+            <a href="/listings?category=hotel">
+                <div><i class="fa-solid fa-bed"></i></div> 
+                <p>Hotels & Stays</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=city">
+                <div><i class="fa-solid fa-city"></i></div> 
+                <p>Metropolitan Cities</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=mountain">
+                <div><i class="fa-solid fa-mountain"></i></div> 
+                <p>Mountain Retreats</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=historical">
+                <div><i class="fa-solid fa-landmark"></i></div> 
+                <p>Historical Castles</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=beach">
+                <div><i class="fa-solid fa-umbrella-beach"></i></div> 
+                <p>Beach Resorts</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=lakeside">
+                <div><i class="fa-solid fa-water"></i></div> 
+                <p>Lakeside Homes</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=forest">
+                <div><i class="fa-solid fa-tree"></i></div> 
+                <p>Forest Getaways</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=luxury">
+                <div><i class="fa-solid fa-home"></i></div> 
+                <p>Luxury Villas</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=igloo">
+                <div><i class="fa-solid fa-igloo"></i></div> 
+                <p>Arctic Igloos</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=exotic">
+                <div><i class="fa-solid fa-gem"></i></div> 
+                <p>Exotic Stays</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=skiing">
+                <div><i class="fa-solid fa-skiing"></i></div> 
+                <p>Ski & Snow Resorts</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=tropical">
+                <div><i class="fa-solid fa-umbrella-beach"></i></div> 
+                <p>Tropical Islands</p>
+            </a>
+        </div>
+        <div class="filter">
+            <a href="/listings?category=rainforest">
+                <div><i class="fa-solid fa-tree"></i></div> 
+                <p>Rainforests</p>
+            </a>
+        </div>
+        <div class="tax-toggle">
+            <div class="form-check-reverse form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
+            </div>
+        </div>
+    </div>
+
+
+      
+    </div>
+      
+            
+            
     
     
-    <div class="row row-cols-lg-3 row-cols-md-2  row-cols-1">
+    
+    <div class="row row-cols-lg-3 row-cols-md-2  row-cols-1 mt-3">
        
             <% for (let listing of AllListings) { %>
 
@@ -14,9 +238,9 @@
                         <div class="card-img-overlay"></div>
 
                         <div class="card-body">
-                            <p><%= listing.title %></p><br>
-                            <p>&#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "Price Not Available" %>/night</p>
-
+                            <p><strong><%= listing.title %></strong></p><br>
+                            <p>&#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "Price Not Available" %>/night
+                            <i class="tax-info">+18% GST</i></p>
                         </div>
                     </div>
                     </a>
@@ -24,6 +248,41 @@
             <% } %>
        
     </div>
-    
-    
+</body>
 
+    <script>
+        let taxSwitch=document.getElementById("flexSwitchCheckDefault");
+        taxSwitch.addEventListener("click",()=>{
+            let Taxinfo=document.getElementsByClassName("tax-info");
+            for (info of Taxinfo){
+                if( info.style.display=="inline"){
+                    info.style.display="None"
+                }else{
+                    info.style.display="inline"
+                }
+                
+            }
+        })
+
+        let searchBox2= document.querySelector("#searchBox");
+        let btnSearch2 = document.querySelector("#searchBtn");
+        
+        btnSearch2.addEventListener("click", (event) => {
+            event.preventDefault(); 
+        
+            let searchValue2 = searchBox2.value.trim(); 
+            console.log(searchValue2)
+        
+            if (searchValue2) {
+                
+                let queryParam = encodeURIComponent(searchValue2); 
+                window.location.href = `/listings?category=${queryParam}`; 
+            } else {
+                alert(" Click on search input and Please select a category from the dropdown!"); // Handle empty input
+            }
+        });
+
+    </script>
+
+
+       
