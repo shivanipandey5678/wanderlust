@@ -3,8 +3,6 @@ if(process.env.NODE_ENV!="production"){
 }
 
 
-
-
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -18,6 +16,7 @@ const listings=require("./Routes/listings.js");
 const reviews=require("./Routes/reviews.js");
 const userRouter=require("./Routes/user.js")
 const session=require("express-session");
+const MongoStore = require('connect-mongo');
 const flash=require("connect-flash");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
@@ -43,11 +42,21 @@ app.use(express.static(path.join(__dirname,"/public")))
 app.use(express.json());  // Ensure JSON requests are parsed correctly
 app.engine('ejs',ejsMate);
 
+const store=MongoStore.create({
+    mongoUrl:dbUrl,
+    crypto:{
+        secret:"process.env.SECRET",
+    },
+    touchAfter:24*3600,
+})
 
-
+store.on("error",(err)=>{
+   console.log("Error In Mongo Session",err)
+});
 
 const sessionOption={
-    secret:"mySecretKey",
+    store,
+    secret:"process.env.SECRET",
     resave:false,
     saveUninitialized:true,
     cookie:{
