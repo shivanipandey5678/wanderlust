@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../Model/users");
 const flash = require("connect-flash");
 const passport = require("passport");
-const wrapAsync=require("../../wanderlust/utlis/wrapAsync");
+const wrapAsync=require("../utlis/wrapAsync");
 const {settingRedirectUrl}=require("../middleware");
 const userController=require("../controllers/users");
 
