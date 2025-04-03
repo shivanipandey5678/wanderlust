@@ -1,33 +1,39 @@
 <% layout("/layouts/boilerplate") -%>
 <body>
-    <div class="row">
-        <div class="col-6 offset-3">
-            <h3 class="mt-3">Sign Up</h3>
-            <form action="/signup" method="post" class="needs-validation" novalidate>
-                
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input name="user[username]" id="username" type="text" placeholder="Enter username" class="form-control" required>
-                    <div class="invalid-feedback">Username is required.</div>
-                    <div class="valid-feedback">Looks good!</div>
-                </div>
+    <div class="container">
+        <div class="row">
+            <!-- Use col-11, col-md-8, and col-lg-6 to make it responsive across screen sizes -->
+            <div class="col-11 col-md-8 col-lg-6 mx-auto">
+                <h3 class="mt-3">Sign Up</h3>
+                <form action="/signup" method="post" class="needs-validation" novalidate>
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input name="user[username]" id="username" type="text" placeholder="Enter username" class="form-control" required>
+                        <div class="invalid-feedback">Username is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
         
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input name="user[email]" id="email" type="email" placeholder="Enter email" class="form-control" required>
-                    <div class="invalid-feedback">Please enter a valid email.</div>
-                    <div class="valid-feedback">Looks good!</div>
-                </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input name="user[email]" id="email" type="email" placeholder="Enter email" class="form-control" required>
+                        <div class="invalid-feedback">Please enter a valid email.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
         
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input name="user[password]" id="password" type="password" placeholder="Enter password" class="form-control" required>
-                    <div class="invalid-feedback">Password is required.</div>
-                    <div class="valid-feedback">Looks good!</div>
-                </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input name="user[password]" id="password" type="password" placeholder="Enter password" class="form-control" required>
+                        <div class="invalid-feedback">Password is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
         
-                <button class="btn btn-dark mb-3" type="submit">Sign Up</button>
-            </form>
+                    <!-- Responsive button design, uses col-lg-2 for large screens, and automatic width for smaller screens -->
+                    <div class="mb-3 col-12 col-lg-2">
+                        <button class="btn btn-dark w-100" type="submit">Sign Up</button>
+                    </div>   
+                </form>
+            </div>
         </div>
     </div>
 </body>

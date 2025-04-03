@@ -1,27 +1,104 @@
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/listings"><i class="fa-solid fa-compass"></i></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          
-          <a class="nav-link" href="/listings">All Listings</a>
-       
-          
-        </div>
-        <div class="navbar-nav ms-auto">
-          <a class="nav-link" href="/listing/new">Add new List</a>
-          <% if(!currentUser){%>
-          <a class="nav-link " aria-current="page" href="/signup"><strong>Sign Up</strong></a>
+<style>
+  .btn-search {
+    background-color: #fe424d;
+    color: #fff;
+    border: none;
+    transition: background 0.3s ease-in-out, border 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    border-radius: 25px;
+    padding: 0 1rem;
+    box-shadow: 3px 3px 10px rgba(128, 128, 128, 0.5) !important;
+  }
+
+  .btn-search:hover {
+    background-color: white;
+    color: #fe424d;
+    border: 1px solid hsl(356, 87%, 70%) !important;
+  }
+
+  .serch-inp {
+    border-radius: 25px !important;
+    padding: 0.5rem 3rem;
+    font-size: 1rem;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    color: #333;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-nav .nav-link:hover {
+    
+    color: white;
+    border-radius: 5px;
+  }
+
+  .navbar-nav .nav-link b {
+    font-weight: bold;
+  }
+
+  .explore-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fe424d;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .explore-text:hover {
+    color: #ff2f2f;
+  }
+  
+</style>
+
+<nav class="navbar navbar-expand-sm bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/listings"><i class="fa-solid fa-compass"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <!-- Explore Section Updated -->
+        <a class="nav-link explore-text" href="/listings"><b>Explore </b></a>
+      </div>
+      <div class="ms-auto">
+        <form class="d-none d-lg-flex d-md-flex ">
+          <input class="form-control me-2 serch-inp" type="text" placeholder="Choose from dropdown :)" aria-label="Search" list="Destinations">
+          <datalist id="Destinations">
+            <option value="hotel"></option>
+            <option value="city"></option>
+            <option value="mountain"></option>
+            <option value="historical"></option>
+            <option value="beach"></option>
+            <option value="lakeside"></option>
+            <option value="forest"></option>
+            <option value="luxury"></option>
+            <option value="igloo"></option>
+            <option value="exotic"></option>
+            <option value="skiing"></option>
+            <option value="tropical"></option>
+            <option value="rainforest"></option>
+
+          </datalist>
+          <button class="btn btn-search" type="submit">
+            <i class="fa-solid fa-magnifying-glass me-2"></i>Search
+          </button>
+        </form>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/listing/new"><b>Add Your Home</b></a>
+        <% if(!currentUser){%>
+          <a class="nav-link" aria-current="page" href="/signup"><strong>Sign Up</strong></a>
           <a class="nav-link" href="/login"><b>Login</b></a>
-          <%}%>
-          <% if(currentUser){%>
-          <a class="nav-link" href="/logout">Logout</a>
-          <%}%>
-          
-        </div>
+        <%}%>
+        <% if(currentUser){%>
+          <a class="nav-link" href="/logout"><b>Logout</b></a>
+        <%}%>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>

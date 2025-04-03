@@ -1,56 +1,82 @@
 <%  layout("/layouts/boilerplate") -%>
 <body>
-    <div class="row">
-        <div class="col-8 offset-2">
-            <h3 class="mt-3">Edit Listing</h3>
-            <form action="/listing/<%= searchList._id %>?_method=PUT" method="post" class="needs-validation" novalidate>
-                
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
-                    <input name="listing[title]" id="title" type="text" value="<%= searchList.title %>" class="form-control" required>
-                    <div class="invalid-feedback">Title is required.</div>
-                    <div class="valid-feedback">Looks good!</div>
-                </div>
-    
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea name="listing[description]" id="description" class="form-control" required><%= searchList.description %></textarea>
-                    <div class="invalid-feedback">Description is required.</div>
-                    <div class="valid-feedback">Looks good!</div>
-                </div>
-    
-                <div class="mb-3">
-                    <label for="image" class="form-label">Image URL</label>
-                    <input name="listing[image][url]" id="image" type="url" value="<%= searchList.image.url %>" class="form-control" required>
-                    <div class="invalid-feedback">Please enter a valid image URL.</div>
-                    <div class="valid-feedback">Valid image URL!</div>
-                </div>
-                
-                <div class="row">
-                    <div class="mb-3 col-md-4">
-                        <label for="price" class="form-label">Price</label>
-                        <input name="listing[price]" id="price" type="number" value="<%= searchList.price %>" class="form-control" required>
-                        <div class="invalid-feedback">Price is required and must be a valid number.</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-10 col-lg-8 mx-auto">
+                <h3 class="mt-3">Edit Listing</h3>
+                <form action="/listing/<%= searchList._id %>?_method=PUT" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+                    
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input name="listing[title]" id="title" type="text" value="<%= searchList.title %>" class="form-control" required>
+                        <div class="invalid-feedback">Title is required.</div>
                         <div class="valid-feedback">Looks good!</div>
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="listing[description]" id="description" class="form-control" required><%= searchList.description %></textarea>
+                        <div class="invalid-feedback">Description is required.</div>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+        
+                    <div class="mb-3">
+                    <p>Origional Listing image</p> 
+                        <img src="<%=origionalList%>" alt="preview_of_list" width="140px"  height="100px"/>
                     </div>
                     
-                    <div class="mb-3 col-md-8">
-                        <label for="country" class="form-label">Country</label>
-                        <input name="listing[country]" id="country" type="text" value="<%= searchList.country %>" class="form-control" required>
-                        <div class="invalid-feedback">Country is required.</div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Edit Listing Image </label>
+                        <input name="listing[image][url]" id="image" type="file" value="<%= searchList.image.url %>" class="form-control" required>
+                        <div class="invalid-feedback">Please enter a valid image URL.</div>
+                        <div class="valid-feedback">Valid image URL!</div>
+                    </div>
+
+                    <select name="listing[category]" id="category" class="form-select" required>
+                        <option value="" disabled>Select a category</option>
+                        <option value="hotel" <%= searchList.category == 'hotel' ? 'selected' : '' %>>Hotels & Stays</option>
+                        <option value="city" <%= searchList.category == 'city' ? 'selected' : '' %>>Metropolitan Cities</option>
+                        <option value="mountain" <%= searchList.category == 'mountain' ? 'selected' : '' %>>Mountain Retreats</option>
+                        <option value="historical" <%= searchList.category == 'historical' ? 'selected' : '' %>>Historical Castles</option>
+                        <option value="beach" <%= searchList.category == 'beach' ? 'selected' : '' %>>Beach Resorts</option>
+                        <option value="lakeside" <%= searchList.category == 'lakeside' ? 'selected' : '' %>>Lakeside Homes</option>
+                        <option value="forest" <%= searchList.category == 'forest' ? 'selected' : '' %>>Forest Getaways</option>
+                        <option value="luxury" <%= searchList.category == 'luxury' ? 'selected' : '' %>>Luxury Villas</option>
+                        <option value="igloo" <%= searchList.category == 'igloo' ? 'selected' : '' %>>Arctic Igloos</option>
+                        <option value="exotic" <%= searchList.category == 'exotic' ? 'selected' : '' %>>Exotic Stays</option>
+                        <option value="skiing" <%= searchList.category == 'skiing' ? 'selected' : '' %>>Ski & Snow Resorts</option>
+                        <option value="tropical" <%= searchList.category == 'tropical' ? 'selected' : '' %>>Tropical Islands</option>
+                        <option value="rainforest" <%= searchList.category == 'rainforest' ? 'selected' : '' %>>Rainforests</option>
+                    </select>
+                    
+                    
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
+                            <label for="price" class="form-label">Price</label>
+                            <input name="listing[price]" id="price" type="number" value="<%= searchList.price %>" class="form-control" required>
+                            <div class="invalid-feedback">Price is required and must be a valid number.</div>
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                        
+                        <div class="mb-3 col-md-8">
+                            <label for="country" class="form-label">Country</label>
+                            <input name="listing[country]" id="country" type="text" value="<%= searchList.country %>" class="form-control" required>
+                            <div class="invalid-feedback">Country is required.</div>
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input name="listing[location]" id="location" type="text" value="<%= searchList.location %>" class="form-control" required>
+                        <div class="invalid-feedback">Location is required.</div>
                         <div class="valid-feedback">Looks good!</div>
                     </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="location" class="form-label">Location</label>
-                    <input name="listing[location]" id="location" type="text" value="<%= searchList.location %>" class="form-control" required>
-                    <div class="invalid-feedback">Location is required.</div>
-                    <div class="valid-feedback">Looks good!</div>
-                </div>
-    
-                <button class="btn btn-dark create-btn mb-3" type="submit">Update</button>
-            </form>
+                    <div class="col-sm-10 col-md-4 col-lg-2">
+                        <button class="btn btn-dark create-btn mb-3 w-100" type="submit">Update</button>
+                    </div>   
+                </form>
+            </div>
         </div>
     </div>
     

@@ -1,114 +1,238 @@
 <%  layout("/layouts/boilerplate") -%>
 <br>
+<script>
+    const MAP_TOKEN = "<%= process.env.MAP_TOKEN %>";
+    const coordinates = <%= JSON.stringify(info_of_list.geometry.coordinates) %>;
+    const Location = "<%= info_of_list.location %>";
+</script>
+<style>
+    /* Responsive Image Styling */
+    .listing_Title{
+       
+        text-align: center;
+    }
+    .show-img {
+      width: 100%;
+      height: auto;
+      border-radius: 0; /* No corner radius on large screens */
+      object-fit: cover;
+    }
+  
+    /* On small and medium screens, add rounded corners and shadow */
+    @media (max-width: 991px) {
+      .show-img {
+        max-height: 300px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+    }
+  
 
-<body>
-    
+    @media (min-width: 992px) { 
+    .img_of_place {
+        max-height: 300px;  /* Adjust the max-height value as needed */
+        object-fit: cover;   /* Ensure the image covers the available space without distortion */
+    }
+}
+    /* Card and Text Styling */
+    .card {
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+  
+    /* Heading Styling */
+    h3, h4 {
+      font-weight: bold;
+      color: #333;
+    }
+  
+    /* Review Section Styling */
+    .list-group-item {
+      border: none;
+      border-bottom: 1px solid #ddd;
+      padding: 10px;
+    }
+  
+    .list-group-item:last-child {
+      border-bottom: none;
+    }
+  
+    .list-group-item .starability-result {
+      display: inline-block;
+      color: #fe424d;
+      margin-bottom: 5px;
+    }
+  
+    /* Button Styling */
+    .create-btn, .delete-btn, .btn-outline-dark {
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+    }
+  
+    .btn-outline-dark {
+      background-color: #fe424d;
+      color: white;
+      border: none;
+      transition: background 0.3s ease;
+    }
+  
+    .btn-outline-dark:hover {
+      background-color: #ff2f2f;
+    }
+  
+    /* Responsive Layout for Cards and Form */
+    .card {
+      margin-bottom: 20px;
+    }
+  
+    .card-body {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+  
+    .col-6 {
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+  
+    /* Review Form */
+    .form-control {
+      border-radius: 8px;
+    }
+  
+    .invalid-feedback {
+      font-size: 0.9rem;
+    }
+  
+    /* Map Styling */
+    #map {
+      width: 100%;
+      height: 300px;
+      background-color: #e0e0e0;
+      border-radius: 10px;
+    }
+  
+    /* On Small Screens, Adjust the Form Inputs */
+    @media (max-width: 767px) {
+      .card-body, .form-control {
+        font-size: 0.9rem;
+      }
+  
+      .col-6 {
+        padding: 15px;
+      }
+  
+      .btns {
+        text-align: center;
+      }
+  
+      .card img {
+        width: 100%;
+        height: auto;
+      }
+  
+      #map {
+        height: 250px;
+      }
+    }
+  
+  </style>
+  
+  <body>
     <div class="row mb-6">
-            <div class="col-8 offset-2">
-             
-               <h3><%=info_of_list.title%></h3>
+      <div class="  listing_Title">
+        <h3><%=info_of_list.title%></h3>
+      </div>
+      <div class="card col-11 col-lg-6 col-md-8  mx-auto">
+        <img src="<%= info_of_list.image.url %>" class="img_of_place show-img" alt="...">
+        <div class="card-body">
+            <p class="text-muted"><strong>Owned by:</strong> <%= info_of_list.owner.username %></p>
+            <p><strong>Description:</strong> <%= info_of_list.description %></p>
+            <p><strong>Price:</strong> ₹ <%= info_of_list.price.toLocaleString("en-IN") %></p>
+            <p><strong>Location:</strong> <%= info_of_list.location %>, <%= info_of_list.country %></p>
+        </div>
+      </div>
+      
+  
+      <% if(currentUser && currentUser._id.equals(info_of_list.owner._id)){%>
+        <div class="btns d-flex justify-content-center gap-3 mt-3">
+            <a href="/listing/<%=info_of_list._id%>/editpage" class="btn create-btn">EDIT</a>
+            <form action="/listing/<%= info_of_list._id %>?_method=DELETE" method="post">
+                <button class="btn delete-btn">Delete</button>
+            </form>
+        </div>
+        
+      <%}%>
+  
+      <% if(currentUser){%>
+        <hr class="mt-4">
+        <div class="card col-11 col-lg-6 col-md-8 mx-auto">
+          <h4>Leave a Review</h4>
+          <form action="/listing/<%=info_of_list._id%>/reviews" method="POST" class="needs-validation" novalidate>
+            <label for="rating" class="form-label">Rating</label>
+            <fieldset class="starability-slot">
+              <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+              <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+              <label for="first-rate1" title="Terrible">1 star</label>
+              <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+              <label for="first-rate2" title="Not good">2 stars</label>
+              <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+              <label for="first-rate3" title="Average">3 stars</label>
+              <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+              <label for="first-rate4" title="Very good">4 stars</label>
+              <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+              <label for="first-rate5" title="Amazing">5 stars</label>
+            </fieldset>
+            <div class="mb-3 mt-3">
+              <label for="comment" class="form-label">Comment</label>
+              <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control w-100" required></textarea>
+              <div class="invalid-feedback">
+                Please enter a comment before submitting.
+              </div>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
             </div>
-            <div class="card col-6 offset-2" >
-                <img src="<%= info_of_list.image.url %>" class="img_of_place show-img" alt="...">
-                <div class="card-body">
-                <p class="card-text">
-                    <p><i>Owned by : <%= info_of_list.owner.username%></i></p>
-                  
-                   <%=info_of_list.description%> <br>
-                   &#8377 <%= info_of_list.price.toLocaleString("en-IN") %><br>
-                   <%=info_of_list.location%> <br>
-                   <%=info_of_list.country%>
-                </p>
+            <button class="btn btn-outline-dark" type="submit">Submit</button>
+          </form>
+        </div>
+      <%}%>
+  
+      <hr class="mt-4">
+      <div class="card col-11 col-lg-6 col-md-8 mx-auto  p-3">
+        <h4>Reviews</h4>
+        <% if (!info_of_list.reviews || info_of_list.reviews.length === 0) { %>
+          <p class="text-muted">No reviews present.</p>
+        <% } else { %>
+          <ul class="list-group">
+            <% for (let review of info_of_list.reviews) { %>
+              <li class="list-group-item d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <p class="starability-result" data-rating="<%= review.rating %>"></p>
+                  <p><strong>Author:</strong> <%= review.author.username %><br>
+                    <strong>Comment:</strong> <%= review.comment %></p>
                 </div>
-            </div>
-            <% if(currentUser && currentUser._id.equals(info_of_list.owner._id)){%>
-            <div class="btns col-6 offset-2 mb-6" >
-                <a href="/listing/<%=info_of_list._id%>/editpage " class="btn create-btn">EDIT</a>
-                <form action="/listing/<%= info_of_list._id %>?_method=DELETE" method="post">
-                    <button class="btn delete-btn">Delete</button>
-                </form>
-            </div>
-            <%}%>
-            <% if(currentUser){%>
-            <hr class="mt-4">
-           
-            <div class="card col-8 offset-2">
-                <h4>Leave a Review</h4>
-                <form action="/listing/<%=info_of_list._id%>/reviews" method="POST" class="needs-validation" novalidate>
-                    <label for="rating" class="form-label">Rating</label>
-
-                    <fieldset class="starability-slot">
-                        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
-                        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-                        <label for="first-rate1" title="Terrible">1 star</label>
-                        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-                        <label for="first-rate2" title="Not good">2 stars</label>
-                        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-                        <label for="first-rate3" title="Average">3 stars</label>
-                        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-                        <label for="first-rate4" title="Very good">4 stars</label>
-                        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-                        <label for="first-rate5" title="Amazing">5 stars</label> 
-                       </fieldset>
-                     
-                    <div class="mb-3 mt-3">
-                        <label for="comment" class="form-label">Comment</label>
-                        <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control w-100" required></textarea>
-                        <div class="invalid-feedback">
-                            Please enter a comment before submitting.
-                        </div>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
-                    </div>
-                    <button class="btn btn-outline-dark" type="submit">Submit</button>
-                </form>
-            </div>
-            <%}%>
-            <hr class="mt-4">
-           
-            <div class="card col-6 offset-2 p-3">
-                <h4>Reviews</h4>
-                <% if (!info_of_list.reviews || info_of_list.reviews.length === 0) { %>
-                    <p class="text-muted">No reviews present.</p>
-                <% } else { %>
-                        <ul class="list-group ">
-                            <% for (let review of info_of_list.reviews) { %>
-                                <li class="list-group-item d-flex justify-content-between align-items-center mb-3">
-                                    <div>
-                                        <p class="starability-result" data-rating=<%= review.rating %> >
-                                          
-                                        </p>
-                                        
-                                       
-                                        <p><strong>Author:</strong> <%= review.author.username %><br>
-                                        <strong>Comment:</strong> <%= review.comment %></p> 
-                                    </div>
-                                    <% if (currentUser && currentUser._id.equals(review.author._id)) { %>
-                                    <form action="/listing/<%= info_of_list._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                                        <button class="btn btn-outline-danger btn-sm">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                    <%}%>
-                                    
-                                </li>
-                            <% } %>
-                        </ul>
-                    <% } %>
-                </div>
-             
-            
-    
-            
-           
-           
+                <% if (currentUser && currentUser._id.equals(review.author._id)) { %>
+                  <form action="/listing/<%= info_of_list._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-outline-danger btn-sm">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </form>
+                <%}%>
+              </li>
+            <% } %>
+          </ul>
+        <% } %>
+      </div>
+  
+      <div class="col-11 m-lg-8   mx-auto mb-3">
+        <h3>Where you will be</h3>
+        <div id="map" ></div>
+      </div>
     </div>
-    
-    
-
-
-
-   
-</body>
-<br>
+  
+    <script src="/js/map.js"></script>
+  </body>
+  

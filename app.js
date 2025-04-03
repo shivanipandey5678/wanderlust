@@ -22,11 +22,12 @@ const flash=require("connect-flash");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const User=require("./Model/users.js");
+
+
+const dbUrl=process.env.ATLASDB_URL;
 async function main(){
-    await mongoose.connect(mongo_url);
+    await mongoose.connect(dbUrl);
 };
-
-
 main()
 .then(()=>{
     console.log("connected to DB");
