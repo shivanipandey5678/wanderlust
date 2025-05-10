@@ -1,29 +1,38 @@
 
-
 ```markdown
-# Wanderlust 🧳🌍
+# 🌍 Wanderlust - A Travel Stay Booking Web App
 
-Wanderlust is a dynamic web application for listing and exploring travel stays, similar to Airbnb. It allows users to create, view, update, and delete property listings with proper validations and error handling.
-
-## 🔧 Tech Stack
-
-- **Frontend:** EJS, Bootstrap 5
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB with Mongoose
-- **Validation:** Joi
-- **Templating Engine:** EJS-Mate (for layout support)
-- **Other Tools:** Method-Override, Express Error Handling
+**Wanderlust** is a full-stack web application inspired by Airbnb. It allows users to explore, create, and manage property listings for travel stays. With features like image uploads, geolocation, reviews, and secure authentication, the platform offers a complete experience for both hosts and travelers.
 
 ---
 
 ## 🚀 Features
 
-- 🏠 Create, Read, Update, and Delete (CRUD) listings
-- 🛡️ Server-side validation using Joi
-- 🚫 Custom error handling for cleaner UX
-- 🌐 Responsive UI using Bootstrap
-- 🖼️ Upload image URLs (nested image object format: `{ image: { url } }`)
-- 🗺️ Location and country input for each listing
+- 🔐 **User Authentication** – Secure signup, login, and logout using Passport.js
+- 🏡 **CRUD Operations** – Create, read, update, and delete listings and reviews
+- 📷 **Image Uploads** – Upload listing images using Cloudinary
+- 🗺️ **Geolocation** – Location features integrated with Mapbox
+- 📱 **Responsive Design** – Built with Bootstrap 5 for mobile-first experience
+- ✅ **Validation** – Joi used for validating user inputs and data
+- ⚠️ **Error Handling** – Custom error handling with helpful feedback
+- 💬 **Flash Messages** – Real-time alerts using connect-flash
+
+---
+
+## 🧰 Tech Stack
+
+### Frontend:
+- **Templating**: EJS
+- **CSS Framework**: Bootstrap 5
+- **Custom CSS**: Additional styling for unique UI
+
+### Backend:
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: MongoDB with Mongoose
+- **Authentication**: Passport.js with passport-local-mongoose
+- **File Uploads**: Multer and Cloudinary
+- **Maps**: Mapbox SDK
 
 ---
 
@@ -31,84 +40,152 @@ Wanderlust is a dynamic web application for listing and exploring travel stays, 
 
 ```
 
-Wanderlust/
-│
-├── Model/
-│   └── listings.js
-├── utils/
+wanderlust/
+├── Model/               # Mongoose schemas
+│   ├── listings.js
+│   ├── reviews.js
+│   └── users.js
+├── Routes/              # Express route handlers
+│   ├── listings.js
+│   ├── listing.js
+│   ├── reviews.js
+│   └── user.js
+├── controllers/         # Route logic
+│   ├── listings.js
+│   ├── reviews.js
+│   └── users.js
+├── views/               # EJS templates
+│   ├── layouts/
+│   ├── listings/
+│   ├── user/
+│   ├── includes/
+│   └── Error.ejs
+├── public/              # Static files
+│   ├── css/
+│   └── js/
+├── utils/               # Utility functions
 │   ├── wrapAsync.js
 │   └── ExpressError.js
-├── views/
-│   ├── listings/
-│   │   ├── index.ejs
-│   │   ├── create.ejs
-│   │   ├── editpage.ejs
-│   │   └── show\.ejs
-│   ├── error.ejs
-│   └── layouts/
-│       └── boilerplate.ejs
-├── public/
-│   └── (static assets like CSS, images)
-├── schema.js
-├── app.js
+├── init/                # Sample data
+│   ├── data.js
+│   └── index.js
+├── app.js               # Main app entry point
+├── schema.js            # Joi validation schemas
+├── cloudConfig.js       # Cloudinary configuration
+├── .env                 # Environment variables
+└── package.json         # Project metadata
 
 ````
 
 ---
 
-## 🧪 Validation Schema (`schema.js`)
+## 🌐 API Endpoints
 
-```js
-const Joi = require("joi");
+### 📌 Listings
+| Method | Endpoint         | Description               |
+|--------|------------------|---------------------------|
+| GET    | `/listings`      | View all listings         |
+| POST   | `/listings`      | Create a new listing      |
+| GET    | `/listing/:id`   | View a single listing     |
+| PUT    | `/listing/:id`   | Update a listing          |
+| DELETE | `/listing/:id`   | Delete a listing          |
 
+### 📝 Reviews
+| Method | Endpoint                              | Description             |
+|--------|----------------------------------------|-------------------------|
+| POST   | `/listing/:id/reviews`                | Add a review            |
+| DELETE | `/listing/:id/reviews/:reviewId`      | Delete a review         |
+
+### 👤 User Authentication
+| Method | Endpoint     | Description               |
+|--------|--------------|---------------------------|
+| GET    | `/signup`    | Render signup page        |
+| POST   | `/signup`    | Register a new user       |
+| GET    | `/login`     | Render login page         |
+| POST   | `/login`     | Login existing user       |
+| GET    | `/logout`    | Logout current user       |
+
+---
+
+## 🛡️ Validation Schemas
+
+### 📄 Listing Schema
+```javascript
 const listingSchema = Joi.object({
-    listing: Joi.object({
-        title: Joi.string().required(),
-        description: Joi.string().required(),
-        image: Joi.object({
-            url: Joi.string().uri().allow("").required()
-        }).required(),
-        price: Joi.number().min(0).required(),
-        location: Joi.string().required(),
-        country: Joi.string().required()
-    }).required()
+  listing: Joi.object({
+    title: Joi.string().required(),
+    description: Joi.string().required(),
+    image: Joi.object({
+      filename: Joi.string().allow(""),
+      url: Joi.string().uri().allow("")
+    }).allow(null),
+    price: Joi.number().required().min(0),
+    location: Joi.string().required(),
+    country: Joi.string().required(),
+    category: Joi.string().valid(
+      "hotel", "city", "mountain", "historical", "beach",
+      "lakeside", "forest", "luxury", "igloo", "exotic",
+      "skiing", "tropical", "rainforest"
+    ).required()
+  }).required()
 });
-
-module.exports = listingSchema;
 ````
 
+### 📄 Review Schema
+
+```javascript
+const reviewSchema = Joi.object({
+  review: Joi.object({
+    rating: Joi.number().required(),
+    comment: Joi.string().required()
+  }).required()
+});
+```
+
 ---
 
-## ⚠️ Error Handling
+## 🛠️ Middleware
 
-All routes are wrapped with `wrapAsync()` to catch async errors.
-Custom errors are handled using `ExpressError`, and an error view is rendered with status code and message.
+### Authentication:
+
+* **`isLoggedIn`** – Ensures the user is logged in
+* **`isOwner`** – Checks if user is the owner of the listing
+* **`isReviewAuthor`** – Checks if user is the author of a review
+
+### Error Handling:
+
+* **`wrapAsync`** – Wraps async functions to catch errors
+* **`ExpressError`** – Custom error class
 
 ---
 
-## 🛠️ How to Run Locally
+## 🌍 Deployment
 
-1. Clone the repository
+### ✅ Environment Variables (`.env`)
 
-   ```bash
-   git clone https://github.com/yourusername/wanderlust.git
-   ```
+```
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+MAP_TOKEN=your_mapbox_token
+ATLASDB_URL=your_mongodb_connection_string
+```
 
-2. Install dependencies
+### 💻 Run Locally
+
+1. **Install dependencies**
 
    ```bash
    npm install
    ```
 
-3. Start MongoDB (locally)
-
-4. Run the server
+2. **Start the application**
 
    ```bash
    node app.js
    ```
 
-5. Open in browser
+3. **Open in browser**
 
    ```
    http://localhost:8080
@@ -116,17 +193,54 @@ Custom errors are handled using `ExpressError`, and an error view is rendered wi
 
 ---
 
-## 🙋‍♀️ Author
+## 📌 Key Files
 
-Made with ❤️ by Shivani Pandey
+* `app.js` – Main app file, sets up middleware, routes, and error handlers
+* `cloudConfig.js` – Cloudinary image upload config
+* `schema.js` – Joi schemas for validating data
+* `middleware.js` – Custom middleware functions
 
 ---
 
-## 📌 Note
+## 🤝 How to Contribute
 
-* Image is stored as an object `{ image: { url } }`, not just a string.
-* Default image logic is handled if URL is empty.
+1. Fork the repository
+2. Create a new branch
 
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit your changes
 
+   ```bash
+   git commit -m "Add feature"
+   ```
+4. Push to GitHub
 
+   ```bash
+   git push origin feature-name
+   ```
+5. Open a pull request
 
+---
+
+## 🙋‍♀️ Author
+
+**Shivani Pandey**
+Made with ❤️ for travelers and hosts.
+
+---
+
+## 📜 License
+
+This project is licensed under the **ISC License**.
+
+---
+
+## 📎 Notes
+
+* Default images are shown if no image is uploaded
+* Flash messages give users instant feedback
+* Designed to be scalable and easy to maintain
+
+```
